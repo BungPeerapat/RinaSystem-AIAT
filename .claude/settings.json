@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find w:/DeveloperProgram/Moe-TTS/Application/app -type f -name *.kt -o -name *.java -o -name *.xml -o -name *.gradle*)",
+      "Bash(./gradlew assembleDebug)",
+      "Bash(python -m venv venv)",
+      "Read(//w/DeveloperProgram/Moe-TTS/**)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(list\\(d.keys\\(\\)\\)[:10]\\)\")",
+      "Bash(grep -r \"port\\\\|PORT\\\\|8080\\\\|7860\" w:/DeveloperProgram/Moe-TTS/Rina-Vtuber-Voice-V2/ --include=*.py -l)",
+      "Bash(xargs grep:*)",
+      "Bash(tasklist)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \"5433\")",
+      "Bash(adb devices:*)"
+    ]
+  }
+}

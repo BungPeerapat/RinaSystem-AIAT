@@ -1,0 +1,62 @@
+# ===== Android / Gradle =====
+*.iml
+.gradle/
+local.properties
+.idea/
+.cxx/
+.externalNativeBuild/
+/build/
+/captures/
+app/build/
+**/build/
+*.apk
+*.aab
+*.dex
+*.class
+
+# ===== Python / Backend =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+env/
+ENV/
+
+# ===== Secrets =====
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+
+# ===== Backend storage / runtime =====
+aria-backend/storage/audio/*
+aria-backend/storage/video/*
+!aria-backend/storage/audio/.gitkeep
+!aria-backend/storage/video/.gitkeep
+aria-backend/_Audio_Preset/
+aria-backend/app_releases/
+aria-backend/node_modules/
+aria-backend/package-lock.json
+
+# ===== OS / Editor =====
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp
+*.swo
+*~
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== APK output dir =====
+release-apks/
