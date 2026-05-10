@@ -36,6 +36,11 @@ ENV/
 *.key
 secrets/
 
+# ===== Database dumps (transferred out-of-band — never commit) =====
+_database/
+*.sql.gz
+*.dump
+
 # ===== Backend storage / runtime =====
 aria-backend/storage/audio/*
 aria-backend/storage/video/*
