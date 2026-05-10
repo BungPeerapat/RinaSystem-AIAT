@@ -24,7 +24,7 @@ class ServerConfigManager @Inject constructor(
         private val SERVER_IP = stringPreferencesKey("server_ip")
         private val SERVER_PORT = intPreferencesKey("server_port")
 
-        const val DEFAULT_IP = "pkshome.ddns.net"
+        const val DEFAULT_IP = "systemdeveloper2.ddns.net"
         const val DEFAULT_PORT = 8000
     }
 

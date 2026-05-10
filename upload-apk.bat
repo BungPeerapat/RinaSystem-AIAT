@@ -51,7 +51,7 @@ echo   Size     : %APK_SIZE% bytes
 echo.
 
 rem --- Server URL ---
-set "DEFAULT_SERVER=http://pkshome.ddns.net:8000"
+set "DEFAULT_SERVER=http://systemdeveloper2.ddns.net:8000"
 set /p SERVER_URL="  Server URL [%DEFAULT_SERVER%]: "
 if "%SERVER_URL%"=="" set "SERVER_URL=%DEFAULT_SERVER%"
 
