@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     APP_RELEASES_DIR: str = "app_releases"
+    TTS_BASE_URL: str = "http://127.0.0.1:7860"
+    TTS_TIMEOUT_SECONDS: float = 30.0
 
     model_config = {"env_file": ".env"}
 

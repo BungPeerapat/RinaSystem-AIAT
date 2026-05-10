@@ -1,16 +1,16 @@
 """
 TTS Service — เรียก Moe-TTS API เพื่อ generate เสียงพูด
-Moe-TTS รันเป็น Gradio app บน http://127.0.0.1:7860
+Moe-TTS รันเป็น Gradio app, base URL อ่านจาก settings.TTS_BASE_URL
+(default: http://127.0.0.1:7860, override ผ่าน .env: TTS_BASE_URL=...)
 API endpoint: GET /api/v1/speech/get_voice/{text}?model_id=0&speaker_id=0&speed=1.0
 """
 import logging
 
 import httpx
 
-logger = logging.getLogger("aria.tts")
+from app.config import settings
 
-_TTS_BASE_URL = "http://127.0.0.1:7860"
-_TIMEOUT = 30.0  # seconds
+logger = logging.getLogger("aria.tts")
 
 
 async def generate_tts(
@@ -30,7 +30,7 @@ async def generate_tts(
     """
     import urllib.parse
     encoded_text = urllib.parse.quote(text, safe="")
-    url = f"{_TTS_BASE_URL}/api/v1/speech/get_voice/{encoded_text}"
+    url = f"{settings.TTS_BASE_URL}/api/v1/speech/get_voice/{encoded_text}"
     params = {
         "model_id": model_id,
         "speaker_id": speaker_id,
@@ -39,14 +39,14 @@ async def generate_tts(
     }
 
     try:
-        async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
+        async with httpx.AsyncClient(timeout=settings.TTS_TIMEOUT_SECONDS) as client:
             response = await client.get(url, params=params)
             response.raise_for_status()
             audio_bytes = response.content
             logger.info(f"TTS generated: {len(audio_bytes)} bytes for '{text[:30]}...'")
             return audio_bytes
     except httpx.ConnectError:
-        raise RuntimeError("Moe-TTS API is not running (http://127.0.0.1:7860)")
+        raise RuntimeError(f"Moe-TTS API is not running ({settings.TTS_BASE_URL})")
     except httpx.HTTPStatusError as e:
         raise RuntimeError(f"TTS API returned error: {e.response.status_code}")
     except Exception as e:
@@ -57,7 +57,7 @@ async def get_tts_models() -> list[dict]:
     """ดึงรายชื่อ models ทั้งหมดจาก Moe-TTS API"""
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            response = await client.get(f"{_TTS_BASE_URL}/api/v1/speech/get_voice_info")
+            response = await client.get(f"{settings.TTS_BASE_URL}/api/v1/speech/get_voice_info")
             response.raise_for_status()
             data = response.json()
             models = data.get("models", {})
@@ -71,7 +71,7 @@ async def get_tts_models() -> list[dict]:
                 if num_speakers == 0:
                     try:
                         sp_resp = await client.get(
-                            f"{_TTS_BASE_URL}/api/v1/speech/get_speakers",
+                            f"{settings.TTS_BASE_URL}/api/v1/speech/get_speakers",
                             params={"model_id": mid},
                         )
                         if sp_resp.status_code == 200:
@@ -95,7 +95,7 @@ async def get_tts_speakers(model_id: int = 0) -> list[dict]:
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             response = await client.get(
-                f"{_TTS_BASE_URL}/api/v1/speech/get_speakers",
+                f"{settings.TTS_BASE_URL}/api/v1/speech/get_speakers",
                 params={"model_id": model_id},
             )
             response.raise_for_status()
@@ -109,7 +109,7 @@ async def is_tts_available() -> bool:
     """ตรวจว่า Moe-TTS API พร้อมใช้งานหรือไม่"""
     try:
         async with httpx.AsyncClient(timeout=3.0) as client:
-            response = await client.get(f"{_TTS_BASE_URL}/api/v1/speech/get_voice_info")
+            response = await client.get(f"{settings.TTS_BASE_URL}/api/v1/speech/get_voice_info")
             return response.status_code == 200
     except Exception:
         return False
